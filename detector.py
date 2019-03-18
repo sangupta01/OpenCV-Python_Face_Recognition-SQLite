@@ -2,16 +2,28 @@ import cv2
 import numpy as np
 import sqlite3
 
-faceDetect = cv2.CascadeClassifier(r'C:\\Users\\Pramod B.S\\Desktop\\face_Recog_sqlite\\haarcascade_frontalface_default.xml')
+faceDetect = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # capture frames from a camera
 cap = cv2.VideoCapture(0)
  
-rec=cv2.createLBPHFaceRecognizer()
-rec.load('recognizer\\trainingData.yml')
+rec = cv2.face.LBPHFaceRecognizer_create()
+rec.read('recognizer\\trainingData.yml')
 
 id=0
-font=cv2.cv.InitFont(cv2.cv.CV_FONT_HERSHEY_COMPLEX_SMALL,5,1,0,4)
+font = cv2.FONT_HERSHEY_SIMPLEX
+
+def walkDb():
+    conn=sqlite3.connect("FaceDB.db")
+    cmd="PRAGMA table_info(People)"
+    cursor=conn.execute(cmd)
+    print cursor
+
+    cmd="SELECT * FROM People"
+    cursor=conn.execute(cmd)
+    for row in cursor:
+        print "%s %s %s %s" % (row[0], row[1], row[2], row[3])
+    conn.close()
 
 def getProfile(id):
     conn=sqlite3.connect("FaceDB.db")
@@ -26,7 +38,8 @@ def getProfile(id):
 
 # loop runs if capturing has been initialized.
 while 1: 
- 
+    #walkDb()
+
     # reads frames from a camera
     ret, img = cap.read() 
  
@@ -43,10 +56,7 @@ while 1:
         profile=getProfile(id)
 
         if(profile!=None):
-            cv2.cv.PutText(cv2.cv.fromarray(img),str(profile[0]),(x,y+50),font,255);
-            cv2.cv.PutText(cv2.cv.fromarray(img),str(profile[1]),(x,y+100),font,255);
-            cv2.cv.PutText(cv2.cv.fromarray(img),str(profile[2]),(x,y+150),font,255);
-            cv2.cv.PutText(cv2.cv.fromarray(img),str(profile[3]),(x,y+200),font,255);
+            cv2.putText(img,str(profile[1]),(x,y-10),font,0.55,(0,255,0),1)
 
     cv2.imshow('img',img)
  

@@ -11,7 +11,7 @@ import numpy as np
 # object we want to detect a cascade function is trained
 # from a lot of positive(faces) and negative(non-faces)
 # images.
-faceDetect = cv2.CascadeClassifier(r'C:\\Users\\Pramod B.S\\Desktop\\face_Recog_sqlite\\haarcascade_frontalface_default.xml')
+faceDetect = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # capture frames from a camera
 cap = cv2.VideoCapture(0)

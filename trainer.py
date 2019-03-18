@@ -2,8 +2,7 @@ import cv2,os
 import numpy as np
 from PIL import Image
 
-recognizer = cv2.createLBPHFaceRecognizer()
-#detector= cv2.CascadeClassifier("haarcascade_frontalface_default.xml");
+recognizer = cv2.face.LBPHFaceRecognizer_create()
 
 path='dataset'
 
@@ -25,7 +24,6 @@ def getImagesWithID(path):
         # extract the face from the training image sample
         faces.append(faceNp)
 
-        print ID
         #If a face is there then append that in the list as well as Id of it
         IDs.append(ID)
         cv2.imshow("training",faceNp)
