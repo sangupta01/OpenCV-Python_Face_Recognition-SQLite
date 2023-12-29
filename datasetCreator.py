@@ -17,29 +17,29 @@ faceDetect = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # capture frames from a camera
 cap = cv2.VideoCapture(0)
 
-def sqlInsertEntry(id, name):
+def sqlInsertEntry(userid, name):
     conn=sqlite3.connect("FaceDB.db")
-    cmd="CREATE TABLE IF NOT EXISTS People (id INT PRIMARY KEY NOT NULL, name STRING NOT NULL)"
+    cmd="CREATE TABLE IF NOT EXISTS People (userid INT PRIMARY KEY NOT NULL, name STRING NOT NULL)"
     cursor=conn.execute(cmd)
 
-    cmd="SELECT * FROM People WHERE id="+str(id)
+    cmd="SELECT * FROM People WHERE userid="+str(userid)
     cursor=conn.execute(cmd)
 
     recordExists=0
     for row in cursor:
         recordExists=1
     if(recordExists==1):
-        cmd="UPDATE People SET name="+name+" WHERE id="+str(id)
+        cmd="UPDATE People SET name="+name+" WHERE userid="+str(userid)
     else:
-        cmd="INSERT INTO People(id,name) Values("+str(id)+","+name+")"
+        cmd="INSERT INTO People(userid,name) Values("+str(userid)+","+name+")"
     conn.execute(cmd)
     conn.commit()
     conn.close()
 
-id = raw_input('enter user-id: ')
-name=raw_input('enter name (within ""): ')
+userid = input('enter user-id: ')
+name = input('enter name (within ""): ')
 
-sqlInsertEntry(id, name)
+sqlInsertEntry(userid, name)
 
 sampleNum = 0
  
@@ -57,18 +57,19 @@ while 1:
  
     for (x,y,w,h) in faces:
         sampleNum = sampleNum+1
-        cv2.imwrite("dataSet/User."+str(id)+"."+str(sampleNum)+".jpg",
+        cv2.imwrite("dataSet/User."+str(userid)+"."+str(sampleNum)+".jpg",
                     gray[y:y+h, x:x+w])
 
         # To draw a rectangle in a face 
         cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2) 
 
-        # wait for 100 ms
-        cv2.waitKey(100)
+        # wait for 10 ms
+        cv2.waitKey(10)
 
     cv2.imshow('img',img)
  
     cv2.waitKey(1)
+    print(f"sampleNum:{sampleNum}")
     if (sampleNum > 100):
         break
  

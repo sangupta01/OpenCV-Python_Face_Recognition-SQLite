@@ -8,26 +8,26 @@ faceDetect = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 cap = cv2.VideoCapture(0)
  
 rec = cv2.face.LBPHFaceRecognizer_create()
-rec.read('recognizer\\trainingData.yml')
+rec.read('recognizer/trainingData.yml')
 
-id=0
+userid=0
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 def walkDb():
     conn=sqlite3.connect("FaceDB.db")
     cmd="PRAGMA table_info(People)"
     cursor=conn.execute(cmd)
-    print cursor
+    print(cursor)
 
     cmd="SELECT * FROM People"
     cursor=conn.execute(cmd)
     for row in cursor:
-        print "%s %s %s %s" % (row[0], row[1], row[2], row[3])
+        print("%s %s %s %s" % (row[0], row[1], row[2], row[3]))
     conn.close()
 
-def getProfile(id):
+def getProfile(userid):
     conn=sqlite3.connect("FaceDB.db")
-    cmd="SELECT * FROM People WHERE ID="+str(id)
+    cmd="SELECT * FROM People WHERE USERID="+str(userid)
     cursor=conn.execute(cmd)
     profile=None
 
@@ -52,8 +52,8 @@ while 1:
     for (x,y,w,h) in faces:
         # To draw a rectangle in a face 
         cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),2) 
-        id,conf=rec.predict(gray[y:y+h,x:x+w])
-        profile=getProfile(id)
+        userid,conf=rec.predict(gray[y:y+h,x:x+w])
+        profile=getProfile(userid)
 
         if(profile!=None):
             cv2.putText(img,str(profile[1]),(x,y-10),font,0.55,(0,255,0),1)

@@ -7,19 +7,7 @@ https://github.com/pramod-b-s/OpenCV-Python_Face_Recognition-SQLite-
 - https://www.youtube.com/watch?v=oqMTdjcrAGk
 - https://www.youtube.com/watch?v=6gWS2CdtZrs
 
-# installation
+# run on mac
 ```
-https://www.python.org/downloads/windows/
-c:\Python27\Scripts>pip install pillow
-c:\Python27\Scripts>pip install opencv-contrib-python
+./run.sh
 ```
-
-# commands
-```
-c:\Users\sangupta\Desktop\opencv>c:\Python27\python datasetCreator.py
-c:\Users\sangupta\Desktop\opencv>c:\Python27\python trainer.py
-c:\Users\sangupta\Desktop\opencv>c:\Python27\python detector.py
-```
-
-# sqlite
-https://www.sqlite.org/2019/sqlite-tools-win32-x86-3270200.zip
